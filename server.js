@@ -42,7 +42,29 @@ router.route('/bears').get(function(req,res){
         res.send(bears);
     })
 
+});
+
+router.route('/bears/:bear_id').get(function(req,res){
+    Bear.findById(req.params.bear_id, function(err,bear){
+        if(err)
+            res.send(err);
+        res.json(bear);
+    });    
 })
+router.route('/bears/:bear_id').put(function(req,res){
+    Bear.findById(req.params.bear_id, function(err,bear){
+        if(err)
+        res.send(err);
+    bear.name = req.body.name; //update the bears info
+    // save the bear
+    bear.save(function(err){
+        if(err)
+            res.send(err);
+        res.json({message:"Bear Updated"});
+    })
+    });
+});
+
 
 app.use('/api',router);
 
